@@ -1,9 +1,10 @@
-﻿using System;
+﻿using FontCraft.Util.File;
+using System;
 using System.Drawing;
-using System.Drawing.Text;
-using System.Windows.Forms;
-using System.IO;
 using System.Drawing.Imaging;
+using System.Drawing.Text;
+using System.IO;
+using System.Windows.Forms;
 
 namespace FontCraft.Forms
 {
@@ -13,12 +14,9 @@ namespace FontCraft.Forms
     public Graphics graph;
 
     string fontPath;
-
-    Boolean toggleBold = false;
-    Boolean toggleItalic = false;
+    MainFile mainFile;
 
     Bitmap surface;
-    Boolean faetfulSet = false;
     PrivateFontCollection customFont;
 
     Bitmap vanila = new Bitmap(Properties.Resources.layout1);
@@ -30,27 +28,58 @@ namespace FontCraft.Forms
       InitializeComponent();
 
       previewPanel.BackgroundImageLayout = ImageLayout.None;
-      TxtFontSize.Text = "24";
-      PaddingY.Text = "0";
-      PaddingX.Text = "0";
 
-      changedValue.Interval = 800;
-      changedValue.Tick += new EventHandler(SizeChanging);
+      //changedValue.Interval = 800;
+      //changedValue.Tick += new EventHandler(SizeChanging);
+
+      int pixelX = 0;
+      int pixelY = 0;
+
+      for (int i = 0; i < 256; i++)
+      {
+        Button editChar = new Button();
+        previewPanel.Controls.Add(editChar);
+        editChar.BackColor = Color.Transparent;
+        editChar.FlatStyle = FlatStyle.Popup;
+        editChar.ForeColor = SystemColors.ButtonShadow;
+        editChar.Location = new Point(pixelX, pixelY);
+        editChar.Name = "char" + i.ToString();
+        editChar.Size = new Size(32, 32);
+        editChar.TabIndex = i;
+        editChar.UseVisualStyleBackColor = false;
+        editChar.Click += new EventHandler((sender, e) => editCharClick(sender, e, editChar.TabIndex));
+
+        pixelX += 32;
+        if (pixelX >= 512)
+        {
+          pixelX = 0;
+          pixelY += 32;
+        }
+      }
+
+      mainFile = new CreateFile().InitFile();
+    }
+
+    private void editCharClick(object sender, EventArgs e, int i)
+    {
+      if (Util.ArrayFont.arrayFont[i] == "")
+        return;
+
+      if (i > 32) i -= 8;
+      MessageBox.Show(i.ToString());
+
     }
 
     private void MainFrm_Load(object sender, EventArgs e)
     {
-      BaseFont.Items.Add("Vanila");
-      BaseFont.Items.Add("Faetful");
-
       ComboFont.Items.Add("Custom");
       foreach (FontFamily font in FontFamily.Families)
       {
         ComboFont.Items.Add(font.Name);
       }
 
-      BaseFont.SelectedIndex = 0;
       ComboFont.SelectedIndex = 1;
+
     }
 
     private void changed()
@@ -64,35 +93,45 @@ namespace FontCraft.Forms
 
       Brush white = new SolidBrush(Color.White);
 
-      g.DrawImage(faetfulSet ? faetful : vanila, new Point(0, 0));
-      graph.DrawImage(faetfulSet ? faetful : vanila, new Point(0, 0));
-
       FontStyle myStyle;
       myStyle = FontStyle.Regular;
 
-      if (toggleBold == true && toggleItalic == false)
+      if (mainFile.bold == 1 && mainFile.italic == 0)
         myStyle = FontStyle.Bold;
-      else if (toggleBold == false && toggleItalic == true)
+      else if (mainFile.bold == 0 && mainFile.italic == 1)
         myStyle = FontStyle.Italic;
-      else if (toggleBold == true && toggleItalic == true)
+      else if (mainFile.bold == 1 && mainFile.italic == 1)
         myStyle = FontStyle.Bold & FontStyle.Italic;
 
-      Font setFont = (ComboFont.Text.Contains("(")) ?
-        new Font((FontFamily)customFont.Families[0], Int32.Parse(TxtFontSize.Text), myStyle) :
-        new Font(FontFamily.Families[ComboFont.SelectedIndex - 1], Int32.Parse(TxtFontSize.Text), myStyle);
 
       string[] fontI = Util.ArrayFont.arrayFont;
-      int pixelX = 0 + Int32.Parse(PaddingY.Text);
-      int pixelY = 64 + Int32.Parse(PaddingX.Text);
-      for (int i = 0; i < fontI.Length - 1; i++)
+      int pixelX = 0;
+      int pixelY = 0;
+      int ind = 0;
+
+      for (int i = 0; i < fontI.Length; i++)
       {
-        g.DrawString(fontI[i],setFont, white, new Point(pixelX, pixelY));
-        graph.DrawString(fontI[i],setFont, white, new Point(pixelX, pixelY));
+
+
+        Bitmap bmpchar = new Bitmap(32, 32);
+        if (fontI[i] != "")
+        {
+          Font setFont = (ComboFont.Text.Contains("(")) ?
+            new Font(customFont.Families[0], mainFile.chars[ind].size, myStyle) :
+            new Font(FontFamily.Families[ComboFont.SelectedIndex - 1], 20, myStyle);
+
+          Graphics grpChar = Graphics.FromImage(bmpchar);
+          grpChar.DrawString(fontI[i], setFont, white, new Point(mainFile.chars[ind].x, mainFile.chars[ind].y));
+
+          ind += 1;
+        }
+
+        graph.DrawImage(bmpchar, new Point(pixelX, pixelY));
 
         pixelX += 32;
-        if (pixelX >= 512 + Int32.Parse(PaddingY.Text))
+        if (pixelX >= 512)
         {
-          pixelX = 0 + Int32.Parse(PaddingY.Text);
+          pixelX = 0;
           pixelY += 32;
         }
       }
@@ -120,14 +159,6 @@ namespace FontCraft.Forms
       }
     }
 
-    private void BaseFont_SelectedIndexChanged(object sender, EventArgs e)
-    {
-      faetfulSet = BaseFont.SelectedIndex == 1;
-
-      if (ComboFont.SelectedIndex > -1)
-        changed();
-    }
-
     private void SelectFont(object sender, EventArgs e)
     {
       if (ComboFont.SelectedIndex == 0 && ComboFont.Text == "Custom")
@@ -136,96 +167,102 @@ namespace FontCraft.Forms
         return;
       }
 
+      mainFile.font_type.name = ComboFont.Text;
       if (ComboFont.SelectedIndex > -1)
-        changed();
-    }
-
-    int position;
-
-    private void MousesDown(object sender, MouseEventArgs e)
-    {
-      position = e.X;
-    }
-
-    private void FontSizeLbl_MouseMove(object sender, MouseEventArgs e)
-    {
-      if (e.Button == MouseButtons.Left)
       {
-        int newFontSize = Int32.Parse(TxtFontSize.Text) + ((e.X - position) / 10);
-
-        if (newFontSize > 0)
-          TxtFontSize.Text = newFontSize.ToString();
-        else
-          TxtFontSize.Text = 1.ToString();
-
-        changedValue.Start();
-      }
-    }
-
-    private void SizeChanging(object sender, EventArgs e)
-    {
-      changed();
-      changedValue.Stop();
-    }
-
-    private void InputSize(object sender, KeyPressEventArgs e)
-    {
-      e.Handled = !char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
-      ((e.KeyChar != '.') || (e.KeyChar != '-'));
-    }
-
-    private void InputEnter(object sender, KeyEventArgs e)
-    {
-      if (e.KeyValue == 13)
-      {
+        mainFile.font_type.locate = "";
         changed();
       }
+      else
+        mainFile.font_type.locate = fontPath;
     }
 
-    private void InputPosition(object sender, KeyPressEventArgs e)
-    {
-      e.Handled = (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar == '.'));
-    }
+    //int position;
 
-    private void PaddingXMove(object sender, MouseEventArgs e)
-    {
-      if (e.Button == MouseButtons.Left)
-      {
-        int newPadding = Int32.Parse(PaddingY.Text) + ((e.X - position) / 10);
+    //private void MousesDown(object sender, MouseEventArgs e)
+    //{
+    //  position = e.X;
+    //}
 
-        PaddingY.Text = newPadding.ToString();
+    //private void FontSizeLbl_MouseMove(object sender, MouseEventArgs e)
+    //{
+    //  if (e.Button == MouseButtons.Left)
+    //  {
+    //    int newFontSize = Int32.Parse(TxtFontSize.Text) + ((e.X - position) / 10);
 
-        changedValue.Start();
-      }
-    }
+    //    if (newFontSize > 0)
+    //      TxtFontSize.Text = newFontSize.ToString();
+    //    else
+    //      TxtFontSize.Text = 1.ToString();
 
-    private void PaddingYMove(object sender, MouseEventArgs e)
-    {
-      if (e.Button == MouseButtons.Left)
-      {
-        int newPadding = Int32.Parse(PaddingX.Text) + ((e.X - position) / 10);
+    //    changedValue.Start();
+    //  }
+    //}
 
-        PaddingX.Text = newPadding.ToString();
+    //private void SizeChanging(object sender, EventArgs e)
+    //{
+    //  changed();
+    //  changedValue.Stop();
+    //}
 
-        changedValue.Start();
-      }
-    }
+    //private void InputSize(object sender, KeyPressEventArgs e)
+    //{
+    //  e.Handled = !char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
+    //  ((e.KeyChar != '.') || (e.KeyChar != '-'));
+    //}
+
+    //private void InputEnter(object sender, KeyEventArgs e)
+    //{
+    //  if (e.KeyValue == 13)
+    //  {
+    //    changed();
+    //  }
+    //}
+
+    //private void InputPosition(object sender, KeyPressEventArgs e)
+    //{
+    //  e.Handled = (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar == '.'));
+    //}
+
+    //private void PaddingXMove(object sender, MouseEventArgs e)
+    //{
+    //  if (e.Button == MouseButtons.Left)
+    //  {
+    //    int newPadding = Int32.Parse(PaddingY.Text) + ((e.X - position) / 10);
+
+    //    PaddingY.Text = newPadding.ToString();
+
+    //    changedValue.Start();
+    //  }
+    //}
+
+    //private void PaddingYMove(object sender, MouseEventArgs e)
+    //{
+    //  if (e.Button == MouseButtons.Left)
+    //  {
+    //    int newPadding = Int32.Parse(PaddingX.Text) + ((e.X - position) / 10);
+
+    //    PaddingX.Text = newPadding.ToString();
+
+    //    changedValue.Start();
+    //  }
+    //}
 
     private void BoldBtn_Click(object sender, EventArgs e)
     {
-      toggleBold = !toggleBold;
-      if (toggleBold == true)
+      mainFile.bold = (mainFile.bold == 0) ? 1 : 0;
+      if (mainFile.bold == 1)
         BoldBtn.BackColor = SystemColors.GradientActiveCaption;
       else
         BoldBtn.BackColor = SystemColors.Control;
 
-        changed();
+      changed();
     }
 
     private void ItalicBtn_Click(object sender, EventArgs e)
     {
-      toggleItalic = !toggleItalic;
-      if (toggleItalic == true)
+      mainFile.italic = (mainFile.italic == 0) ? 1 : 0;
+      if (mainFile.italic == 1)
         ItalicBtn.BackColor = SystemColors.GradientActiveCaption;
       else
         ItalicBtn.BackColor = SystemColors.Control;
@@ -244,6 +281,21 @@ namespace FontCraft.Forms
       expfrm.fontPath = fontPath;
 
       expfrm.ShowDialog();
+    }
+
+    private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+      new About().ShowDialog();
+    }
+
+    private void MainFrm_FormClosed(object sender, FormClosedEventArgs e)
+    {
+
+    }
+
+    private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+      Application.Exit();
     }
   }
 }
