@@ -3,6 +3,7 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
+using System.Text.Json;
 using System.IO;
 using System.Windows.Forms;
 
@@ -10,11 +11,11 @@ namespace FontCraft.Forms
 {
   public partial class MainFrm : Form
   {
-    public Graphics g;
     public Graphics graph;
 
     string fontPath;
     MainFile mainFile;
+    MainFile oldFile;
 
     Bitmap surface;
     PrivateFontCollection customFont;
@@ -58,6 +59,7 @@ namespace FontCraft.Forms
       }
 
       mainFile = new CreateFile().InitFile();
+      oldFile = new CreateFile().InitFile();
     }
 
     private void editCharClick(object sender, EventArgs e, int i)
@@ -65,9 +67,33 @@ namespace FontCraft.Forms
       if (Util.ArrayFont.arrayFont[i] == "")
         return;
 
-      if (i > 32) i -= 8;
-      MessageBox.Show(i.ToString());
+      int chars = i;
+      if (chars > 32) chars -= 8;
 
+      FontStyle myStyle;
+      myStyle = FontStyle.Regular;
+
+      if (mainFile.bold == 1 && mainFile.italic == 0)
+        myStyle = FontStyle.Bold;
+      else if (mainFile.bold == 0 && mainFile.italic == 1)
+        myStyle = FontStyle.Italic;
+      else if (mainFile.bold == 1 && mainFile.italic == 1)
+        myStyle = FontStyle.Bold & FontStyle.Italic;
+
+      Chars c = mainFile.chars[chars];
+
+      EditCharFrm edit = new EditCharFrm(chars, i, ComboFont.SelectedIndex - 1, myStyle, c.x, c.y, c.size);
+      edit.fileFont = fontPath;
+      edit.font = ComboFont.Text;
+
+      if (edit.ShowDialog() == DialogResult.OK)
+      {
+        mainFile.chars[chars].x = edit.potitionX;
+        mainFile.chars[chars].y = edit.potitionY;
+        mainFile.chars[chars].size = edit.size;
+
+        changed();
+      }
     }
 
     private void MainFrm_Load(object sender, EventArgs e)
@@ -79,7 +105,7 @@ namespace FontCraft.Forms
       }
 
       ComboFont.SelectedIndex = 1;
-
+      oldFile.font_name = ComboFont.Text;
     }
 
     private void changed()
@@ -88,7 +114,6 @@ namespace FontCraft.Forms
       surface.MakeTransparent();
       graph = Graphics.FromImage(surface);
       previewPanel.BackgroundImage = surface;
-      g = previewPanel.CreateGraphics();
 
 
       Brush white = new SolidBrush(Color.White);
@@ -117,11 +142,11 @@ namespace FontCraft.Forms
         if (fontI[i] != "")
         {
           Font setFont = (ComboFont.Text.Contains("(")) ?
-            new Font(customFont.Families[0], mainFile.chars[ind].size, myStyle) :
-            new Font(FontFamily.Families[ComboFont.SelectedIndex - 1], 20, myStyle);
+            new Font(customFont.Families[0], (float)mainFile.chars[ind].size, myStyle) :
+            new Font(FontFamily.Families[ComboFont.SelectedIndex - 1], (float)mainFile.chars[ind].size, myStyle);
 
           Graphics grpChar = Graphics.FromImage(bmpchar);
-          grpChar.DrawString(fontI[i], setFont, white, new Point(mainFile.chars[ind].x, mainFile.chars[ind].y));
+          grpChar.DrawString(fontI[i], setFont, white, new PointF(mainFile.chars[ind].x, mainFile.chars[ind].y));
 
           ind += 1;
         }
@@ -167,14 +192,9 @@ namespace FontCraft.Forms
         return;
       }
 
-      mainFile.font_type.name = ComboFont.Text;
+      mainFile.font_name = ComboFont.Text;
       if (ComboFont.SelectedIndex > -1)
-      {
-        mainFile.font_type.locate = "";
         changed();
-      }
-      else
-        mainFile.font_type.locate = fontPath;
     }
 
     //int position;
@@ -288,14 +308,59 @@ namespace FontCraft.Forms
       new About().ShowDialog();
     }
 
-    private void MainFrm_FormClosed(object sender, FormClosedEventArgs e)
-    {
-
-    }
-
     private void exitToolStripMenuItem_Click(object sender, EventArgs e)
     {
       Application.Exit();
+    }
+
+    private void MainFrm_FormClosing(object sender, FormClosingEventArgs e)
+    {
+      String old = JsonSerializer.Serialize(oldFile);
+      String newFile = JsonSerializer.Serialize(mainFile);
+
+      if (old == newFile) return;
+      DialogResult exit = MessageBox.Show("", "", 
+        MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+
+      if (exit == DialogResult.Yes) {
+        
+      }
+
+
+      e.Cancel = exit == DialogResult.Cancel;
+    }
+
+    private void changeAllChar(object sender, EventArgs e)
+    {
+      int chars = 56;
+
+      FontStyle myStyle;
+      myStyle = FontStyle.Regular;
+
+      if (mainFile.bold == 1 && mainFile.italic == 0)
+        myStyle = FontStyle.Bold;
+      else if (mainFile.bold == 0 && mainFile.italic == 1)
+        myStyle = FontStyle.Italic;
+      else if (mainFile.bold == 1 && mainFile.italic == 1)
+        myStyle = FontStyle.Bold & FontStyle.Italic;
+
+      Chars c = mainFile.chars[chars];
+
+      EditCharFrm edit = new EditCharFrm(-1, 64, ComboFont.SelectedIndex - 1, myStyle, c.x, c.y, c.size);
+      edit.fileFont = fontPath;
+      edit.font = ComboFont.Text;
+
+      if (edit.ShowDialog() == DialogResult.OK)
+      {
+        foreach (Chars chari in mainFile.chars)
+        {
+        chari.x = edit.potitionX;
+        chari.y = edit.potitionY;
+        chari.size = edit.size;
+        }
+
+        changed();
+      }
     }
   }
 }

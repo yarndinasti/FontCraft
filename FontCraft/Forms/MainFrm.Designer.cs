@@ -58,7 +58,7 @@ namespace FontCraft.Forms
       this.ItalicBtn = new System.Windows.Forms.ToolStripButton();
       this.ExportBtn = new System.Windows.Forms.ToolStripButton();
       this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-      this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
+      this.changeAllCharBtn = new System.Windows.Forms.ToolStripButton();
       this.BgPanel.SuspendLayout();
       this.menuStrip1.SuspendLayout();
       this.toolStrip1.SuspendLayout();
@@ -209,7 +209,7 @@ namespace FontCraft.Forms
             this.ItalicBtn,
             this.ExportBtn,
             this.toolStripSeparator3,
-            this.toolStripButton4});
+            this.changeAllCharBtn});
       this.toolStrip1.Location = new System.Drawing.Point(0, 24);
       this.toolStrip1.Name = "toolStrip1";
       this.toolStrip1.Size = new System.Drawing.Size(514, 25);
@@ -222,7 +222,7 @@ namespace FontCraft.Forms
       this.OpenBtn.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newToolStripMenuItem,
             this.importAsHDPackToolStripMenuItem});
-      this.OpenBtn.Image = ((System.Drawing.Image)(resources.GetObject("OpenBtn.Image")));
+      this.OpenBtn.Image = global::FontCraft.Properties.Resources.browse_8;
       this.OpenBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.OpenBtn.Name = "OpenBtn";
       this.OpenBtn.Size = new System.Drawing.Size(32, 22);
@@ -255,7 +255,7 @@ namespace FontCraft.Forms
       // BrowseBtn
       // 
       this.BrowseBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-      this.BrowseBtn.Image = ((System.Drawing.Image)(resources.GetObject("BrowseBtn.Image")));
+      this.BrowseBtn.Image = global::FontCraft.Properties.Resources.browse_font_8;
       this.BrowseBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.BrowseBtn.Name = "BrowseBtn";
       this.BrowseBtn.Size = new System.Drawing.Size(23, 22);
@@ -271,6 +271,7 @@ namespace FontCraft.Forms
       // BoldBtn
       // 
       this.BoldBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+      this.BoldBtn.Image = global::FontCraft.Properties.Resources.bold_8;
       this.BoldBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.BoldBtn.Name = "BoldBtn";
       this.BoldBtn.Size = new System.Drawing.Size(23, 22);
@@ -280,6 +281,7 @@ namespace FontCraft.Forms
       // ItalicBtn
       // 
       this.ItalicBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+      this.ItalicBtn.Image = global::FontCraft.Properties.Resources.italic_8;
       this.ItalicBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.ItalicBtn.Name = "ItalicBtn";
       this.ItalicBtn.Size = new System.Drawing.Size(23, 22);
@@ -290,7 +292,7 @@ namespace FontCraft.Forms
       // 
       this.ExportBtn.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
       this.ExportBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-      this.ExportBtn.Image = ((System.Drawing.Image)(resources.GetObject("ExportBtn.Image")));
+      this.ExportBtn.Image = global::FontCraft.Properties.Resources.export_8;
       this.ExportBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.ExportBtn.Name = "ExportBtn";
       this.ExportBtn.Size = new System.Drawing.Size(23, 22);
@@ -302,14 +304,15 @@ namespace FontCraft.Forms
       this.toolStripSeparator3.Name = "toolStripSeparator3";
       this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
       // 
-      // toolStripButton4
+      // changeAllCharBtn
       // 
-      this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-      this.toolStripButton4.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton4.Image")));
-      this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
-      this.toolStripButton4.Name = "toolStripButton4";
-      this.toolStripButton4.Size = new System.Drawing.Size(23, 22);
-      this.toolStripButton4.Text = "Change All Char";
+      this.changeAllCharBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+      this.changeAllCharBtn.Image = global::FontCraft.Properties.Resources.edit_font_8;
+      this.changeAllCharBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+      this.changeAllCharBtn.Name = "changeAllCharBtn";
+      this.changeAllCharBtn.Size = new System.Drawing.Size(23, 22);
+      this.changeAllCharBtn.Text = "Change All Char";
+      this.changeAllCharBtn.Click += new System.EventHandler(this.changeAllChar);
       // 
       // MainFrm
       // 
@@ -325,7 +328,7 @@ namespace FontCraft.Forms
       this.MaximizeBox = false;
       this.Name = "MainFrm";
       this.Text = "Fontcraft";
-      this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainFrm_FormClosed);
+      this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainFrm_FormClosing);
       this.Load += new System.EventHandler(this.MainFrm_Load);
       this.BgPanel.ResumeLayout(false);
       this.menuStrip1.ResumeLayout(false);
@@ -364,7 +367,7 @@ namespace FontCraft.Forms
     private System.Windows.Forms.ToolStripButton ItalicBtn;
     private System.Windows.Forms.ToolStripButton ExportBtn;
     private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-    private System.Windows.Forms.ToolStripButton toolStripButton4;
+    private System.Windows.Forms.ToolStripButton changeAllCharBtn;
     private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
     private System.Windows.Forms.ToolStripMenuItem importAsHDPackToolStripMenuItem;
   }
