@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace FontCraft.Util
 {
@@ -20,5 +21,9 @@ namespace FontCraft.Util
                                         "╨", "╤", "╥", "╙", "╘", "╒", "╓", "╫", "╪", "┘", "┌", "█", "▄", "▌", "▐", "▀",
                                         "α", "β", "Γ", "π", "Σ", "σ", "μ", "γ", "Θ", "θ", "Ω", "δ", "∞", "ϕ", "ε", "η",
                                         "≡", "±", "≥", "≤", "⌡", "⌠", "÷", "≈", "°", "▪", "·", "√", "ⁿ", "²", "■", ""};
+
+    public static string pathTemp = Path.Combine(Path.GetTempPath(), "FontCraft");
+    public static string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), 
+                                @"yansaan\FontCraft");
   }
 }

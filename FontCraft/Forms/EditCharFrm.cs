@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Text;
+using System.IO;
 using System.Windows.Forms;
 
 namespace FontCraft.Forms
 {
   public partial class EditCharFrm : Form
   {
+    string str;
     int ids;
-    int id_char;
     int fontid;
 
     public float potitionX;
@@ -19,7 +20,6 @@ namespace FontCraft.Forms
     float y;
     float s;
 
-    public string fileFont;
     public string font;
     PrivateFontCollection customFont;
     FontStyle style;
@@ -30,7 +30,6 @@ namespace FontCraft.Forms
     {
       InitializeComponent();
       ids = Ichar;
-      id_char = idChar;
       this.fontid = fontid;
       this.style = style;
 
@@ -38,7 +37,7 @@ namespace FontCraft.Forms
       this.y = y;
       this.s = s;
 
-      previewBox.BackgroundImageLayout = ImageLayout.None;
+      str = (Ichar < 0) ? "A" : Util.ArrayFont.arrayFont[idChar];
     }
 
     private void EditCharFrm_Load(object sender, EventArgs e)
@@ -46,6 +45,8 @@ namespace FontCraft.Forms
       paddBottom.Value = (decimal)x;
       paddTop.Value = (decimal)y;
       fontSize.Value = (decimal)s;
+
+      Text = (ids < 0) ? "Edit All Charachers" : String.Format("Edit Characher {0}", str);
 
       Changed(sender, e);
     }
@@ -62,24 +63,22 @@ namespace FontCraft.Forms
       bitmap = new Bitmap(32, 32);
       bitmap.MakeTransparent();
       graph = Graphics.FromImage(bitmap);
-      previewBox.BackgroundImage = bitmap;
+      previewBox.Image = bitmap;
 
       Brush white = new SolidBrush(Color.White);
-      string s = (ids < 0) ? "A" : Util.ArrayFont.arrayFont[id_char];
-
 
       if (font.Contains("("))
       {
         customFont = new PrivateFontCollection();
-        customFont.AddFontFile(fileFont);
+        customFont.AddFontFile(Path.Combine(Util.ArrayFont.path, @"font\font.ttf"));
 
         Font setFont = new Font(customFont.Families[0], (float)fontSize.Value, style);
-        graph.DrawString(s, setFont, white, new PointF((float)paddBottom.Value, (float)paddTop.Value));
+        graph.DrawString(str, setFont, white, new PointF((float)paddBottom.Value, (float)paddTop.Value));
       }
       else
       {
         Font setFont = new Font(FontFamily.Families[fontid], (float)fontSize.Value, style);
-        graph.DrawString(s, setFont, white, new PointF((float)paddBottom.Value, (float)paddTop.Value));
+        graph.DrawString(str, setFont, white, new PointF((float)paddBottom.Value, (float)paddTop.Value));
       }
     }
   }

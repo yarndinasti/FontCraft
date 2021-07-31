@@ -46,16 +46,17 @@ namespace FontCraft.Forms
       // previewBox
       // 
       this.previewBox.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-      this.previewBox.Location = new System.Drawing.Point(12, 12);
+      this.previewBox.Location = new System.Drawing.Point(11, 97);
       this.previewBox.Name = "previewBox";
-      this.previewBox.Size = new System.Drawing.Size(32, 32);
+      this.previewBox.Size = new System.Drawing.Size(50, 50);
+      this.previewBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
       this.previewBox.TabIndex = 0;
       this.previewBox.TabStop = false;
       // 
       // label1
       // 
       this.label1.AutoSize = true;
-      this.label1.Location = new System.Drawing.Point(119, 13);
+      this.label1.Location = new System.Drawing.Point(11, 13);
       this.label1.Name = "label1";
       this.label1.Size = new System.Drawing.Size(73, 15);
       this.label1.TabIndex = 1;
@@ -69,7 +70,7 @@ namespace FontCraft.Forms
             0,
             0,
             65536});
-      this.paddTop.Location = new System.Drawing.Point(218, 11);
+      this.paddTop.Location = new System.Drawing.Point(110, 11);
       this.paddTop.Minimum = new decimal(new int[] {
             100,
             0,
@@ -83,7 +84,7 @@ namespace FontCraft.Forms
       // label2
       // 
       this.label2.AutoSize = true;
-      this.label2.Location = new System.Drawing.Point(119, 42);
+      this.label2.Location = new System.Drawing.Point(11, 42);
       this.label2.Name = "label2";
       this.label2.Size = new System.Drawing.Size(94, 15);
       this.label2.TabIndex = 1;
@@ -97,7 +98,7 @@ namespace FontCraft.Forms
             0,
             0,
             65536});
-      this.paddBottom.Location = new System.Drawing.Point(218, 40);
+      this.paddBottom.Location = new System.Drawing.Point(110, 40);
       this.paddBottom.Minimum = new decimal(new int[] {
             100,
             0,
@@ -111,7 +112,7 @@ namespace FontCraft.Forms
       // label3
       // 
       this.label3.AutoSize = true;
-      this.label3.Location = new System.Drawing.Point(119, 71);
+      this.label3.Location = new System.Drawing.Point(11, 71);
       this.label3.Name = "label3";
       this.label3.Size = new System.Drawing.Size(54, 15);
       this.label3.TabIndex = 1;
@@ -125,7 +126,7 @@ namespace FontCraft.Forms
             0,
             0,
             65536});
-      this.fontSize.Location = new System.Drawing.Point(218, 69);
+      this.fontSize.Location = new System.Drawing.Point(110, 69);
       this.fontSize.Maximum = new decimal(new int[] {
             200,
             0,
@@ -149,7 +150,7 @@ namespace FontCraft.Forms
       // okBtn
       // 
       this.okBtn.DialogResult = System.Windows.Forms.DialogResult.OK;
-      this.okBtn.Location = new System.Drawing.Point(216, 115);
+      this.okBtn.Location = new System.Drawing.Point(110, 124);
       this.okBtn.Name = "okBtn";
       this.okBtn.Size = new System.Drawing.Size(75, 23);
       this.okBtn.TabIndex = 3;
@@ -161,7 +162,7 @@ namespace FontCraft.Forms
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(303, 146);
+      this.ClientSize = new System.Drawing.Size(193, 159);
       this.Controls.Add(this.okBtn);
       this.Controls.Add(this.fontSize);
       this.Controls.Add(this.label3);

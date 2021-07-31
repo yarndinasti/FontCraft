@@ -34,6 +34,7 @@ namespace FontCraft.Forms
       this.BgPanel = new System.Windows.Forms.Panel();
       this.menuStrip1 = new System.Windows.Forms.MenuStrip();
       this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.newToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
       this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -99,6 +100,7 @@ namespace FontCraft.Forms
       // fileToolStripMenuItem
       // 
       this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.newToolStripMenuItem1,
             this.openToolStripMenuItem,
             this.saveToolStripMenuItem,
             this.saveAsToolStripMenuItem,
@@ -111,12 +113,21 @@ namespace FontCraft.Forms
       this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
       this.fileToolStripMenuItem.Text = "&File";
       // 
+      // newToolStripMenuItem1
+      // 
+      this.newToolStripMenuItem1.Name = "newToolStripMenuItem1";
+      this.newToolStripMenuItem1.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+      this.newToolStripMenuItem1.Size = new System.Drawing.Size(193, 22);
+      this.newToolStripMenuItem1.Text = "&New";
+      this.newToolStripMenuItem1.Click += new System.EventHandler(this.newToolStripMenuItem1_Click);
+      // 
       // openToolStripMenuItem
       // 
       this.openToolStripMenuItem.Name = "openToolStripMenuItem";
       this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
       this.openToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
       this.openToolStripMenuItem.Text = "&Open";
+      this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
       // 
       // saveToolStripMenuItem
       // 
@@ -132,6 +143,7 @@ namespace FontCraft.Forms
             | System.Windows.Forms.Keys.S)));
       this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
       this.saveAsToolStripMenuItem.Text = "S&ave as...";
+      this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
       // 
       // toolStripSeparator4
       // 
@@ -228,17 +240,19 @@ namespace FontCraft.Forms
       this.OpenBtn.Size = new System.Drawing.Size(32, 22);
       this.OpenBtn.Text = "Open";
       this.OpenBtn.ToolTipText = "Open";
+      this.OpenBtn.ButtonClick += new System.EventHandler(this.OpenBtn_ButtonClick);
       // 
       // newToolStripMenuItem
       // 
       this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-      this.newToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+      this.newToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
       this.newToolStripMenuItem.Text = "New";
+      this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
       // 
       // importAsHDPackToolStripMenuItem
       // 
       this.importAsHDPackToolStripMenuItem.Name = "importAsHDPackToolStripMenuItem";
-      this.importAsHDPackToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+      this.importAsHDPackToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
       this.importAsHDPackToolStripMenuItem.Text = "Import on HD Font";
       // 
       // toolStripSeparator1
@@ -370,6 +384,7 @@ namespace FontCraft.Forms
     private System.Windows.Forms.ToolStripButton changeAllCharBtn;
     private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
     private System.Windows.Forms.ToolStripMenuItem importAsHDPackToolStripMenuItem;
+    private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem1;
   }
 }
 

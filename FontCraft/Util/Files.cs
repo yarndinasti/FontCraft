@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace FontCraft.Util.File
+namespace FontCraft.Util.Files
 {
   public class MainFile
   {
