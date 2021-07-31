@@ -135,6 +135,7 @@ namespace FontCraft.Forms
       this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
       this.saveToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
       this.saveToolStripMenuItem.Text = "&Save";
+      this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
       // 
       // saveAsToolStripMenuItem
       // 
@@ -173,6 +174,7 @@ namespace FontCraft.Forms
             | System.Windows.Forms.Keys.S)));
       this.exportToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
       this.exportToolStripMenuItem.Text = "E&xport";
+      this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
       // 
       // toolStripSeparator5
       // 
@@ -245,14 +247,14 @@ namespace FontCraft.Forms
       // newToolStripMenuItem
       // 
       this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-      this.newToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+      this.newToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
       this.newToolStripMenuItem.Text = "New";
       this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
       // 
       // importAsHDPackToolStripMenuItem
       // 
       this.importAsHDPackToolStripMenuItem.Name = "importAsHDPackToolStripMenuItem";
-      this.importAsHDPackToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+      this.importAsHDPackToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
       this.importAsHDPackToolStripMenuItem.Text = "Import on HD Font";
       // 
       // toolStripSeparator1

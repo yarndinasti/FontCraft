@@ -3,6 +3,7 @@ using System.IO.Compression;
 using System.Text.Json;
 using FontCraft.Util.Files;
 using System.Windows.Forms;
+using System;
 
 namespace FontCraft.Util
 {
@@ -11,15 +12,22 @@ namespace FontCraft.Util
     ClsEncryptDecryptFiles decryptFiles = new ClsEncryptDecryptFiles("fontcraftfile");
     public string savePath = "";
 
-    public bool Save(MainFile main, string path = "")
+    public bool Save(MainFile main, string path = "", string fontPath = "")
     {
       string locate = "";
       if (path == "")
       {
         SaveFileDialog save = new SaveFileDialog();
         save.Title = "Save as...";
-        save.DefaultExt = "Pack";
         save.Filter = "FontCraft Packs|*.fcps";
+
+        int count = 1;
+        string nameFile = String.Format("Font Pack {0}.fcps", count);
+
+        while (File.Exists(save.FileName))
+          nameFile = String.Format("Font Pack {0}.fcps", count++);
+
+        save.FileName = nameFile;
 
         if (save.ShowDialog() == DialogResult.OK)
           locate = save.FileName;
@@ -30,13 +38,13 @@ namespace FontCraft.Util
       if (locate == "")
         return false;
 
-      if (!Directory.Exists(ArrayFont.pathTemp)) Directory.CreateDirectory(Path.Combine(ArrayFont.pathTemp, "file"));
+      if (!Directory.Exists(Path.Combine(ArrayFont.pathTemp, "file"))) 
+        Directory.CreateDirectory(Path.Combine(ArrayFont.pathTemp, "file"));
 
       string json = JsonSerializer.Serialize(main);
       File.WriteAllText(Path.Combine(ArrayFont.pathTemp, @"file\config.json"), json);
-      if (File.Exists(Path.Combine(ArrayFont.path, @"font\font.ttf")))
-        File.Copy(Path.Combine(ArrayFont.path, @"font\font.ttf"),
-          Path.Combine(ArrayFont.pathTemp, @"file\font.ttf"));
+      if (fontPath != "")
+        File.Copy(fontPath, Path.Combine(ArrayFont.pathTemp, @"file\font.ttf"));
 
       ZipFile.CreateFromDirectory(Path.Combine(ArrayFont.pathTemp, "file"), Path.Combine(ArrayFont.pathTemp, "file.zip"));
       File.WriteAllBytes(locate, decryptFiles.Encryption(Path.Combine(ArrayFont.pathTemp, "file.zip")));

@@ -19,11 +19,10 @@ namespace FontCraft.Forms
     Bitmap surface;
     PrivateFontCollection customFont;
 
-    Bitmap vanila = new Bitmap(Properties.Resources.layout1);
-    Bitmap faetful = new Bitmap(Properties.Resources.layout2);
+    string fontFile = "";
+    string filesPath = "";
 
     Timer changedValue = new Timer();
-    string filesPath;
     public MainFrm()
     {
       InitializeComponent();
@@ -32,7 +31,8 @@ namespace FontCraft.Forms
 
       previewPanel.BackgroundImageLayout = ImageLayout.None;
 
-      filesPath = "";
+      foreach (string font in Directory.GetFiles(Path.Combine(Util.ArrayFont.path, "font")))
+        File.Delete(font);
 
       int pixelX = 0;
       int pixelY = 0;
@@ -42,13 +42,11 @@ namespace FontCraft.Forms
         Panel editChar = new Panel();
         previewPanel.Controls.Add(editChar);
         editChar.BackColor = Color.Transparent;
-        //editChar.FlatStyle = FlatStyle.Popup;
         editChar.ForeColor = SystemColors.ButtonShadow;
         editChar.Location = new Point(pixelX, pixelY);
         editChar.Name = "char" + i.ToString();
         editChar.Size = new Size(32, 32);
         editChar.TabIndex = i;
-        //editChar.UseVisualStyleBackColor = false;
         editChar.Click += new EventHandler((sender, e) => editCharClick(sender, e, editChar.TabIndex));
 
         pixelX += 32;
@@ -183,19 +181,27 @@ namespace FontCraft.Forms
 
         if (openFont.ShowDialog() == DialogResult.OK)
         {
-          if (!Directory.Exists(Path.Combine(Util.ArrayFont.path, "font")))
-            Directory.CreateDirectory(Path.Combine(Util.ArrayFont.path, "font"));
+          string fontDir = Path.Combine(Util.ArrayFont.path, "font");
 
-          File.Copy(openFont.FileName, Path.Combine(Util.ArrayFont.path, @"font\font.ttf"), true);
+          if (!Directory.Exists(fontDir))
+            Directory.CreateDirectory(fontDir);
+
+          int count = 0;
+          string nameFont = String.Format("font{0}", count.ToString("000"));
+
+          while (File.Exists(Path.Combine(fontDir, nameFont + ".ttf")))
+            nameFont = String.Format("font{0}", count++.ToString("000"));
+
+          fontFile = Path.Combine(fontDir, nameFont + ".ttf");
+          File.Copy(openFont.FileName, fontFile);
+
           customFont = new PrivateFontCollection();
-          customFont.AddFontFile(Path.Combine(Util.ArrayFont.path, @"font\font.ttf"));
+          customFont.AddFontFile(Path.Combine(fontFile));
 
           ComboFont.Items.RemoveAt(0);
           ComboFont.Items.Insert(0, "(" + customFont.Families[0].Name + ")");
           ComboFont.SelectedIndex = 0;
         }
-        else
-          ComboFont.SelectedIndex = 1;
       }
     }
 
@@ -325,7 +331,7 @@ namespace FontCraft.Forms
         MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 
       if (exit == DialogResult.Yes)
-        return new Util.SaveProcess().Save(mainFile, filesPath);
+        return new Util.SaveProcess().Save(mainFile, filesPath, fontFile);
 
       else if (exit == DialogResult.No)
         return true;
@@ -333,20 +339,7 @@ namespace FontCraft.Forms
       return false;
     }
 
-    private void MainFrm_FormClosing(object sender, FormClosingEventArgs e)
-    {
-      if (Saveing())
-      {
-        if (File.Exists(Path.Combine(Util.ArrayFont.path, @"font\font.ttf")))
-        {
-          //customFont.Dispose();
-          //customFont = null;
-          File.Delete(Path.Combine(Util.ArrayFont.path, @"font\font.ttf"));
-        }
-      }
-      else
-        e.Cancel = true;
-    }
+    private void MainFrm_FormClosing(object sender, FormClosingEventArgs e) => e.Cancel = !Saveing();
 
     private void changeAllChar(object sender, EventArgs e)
     {
@@ -395,9 +388,8 @@ namespace FontCraft.Forms
           ComboFont.Items.RemoveAt(0);
           ComboFont.Items.Insert(0, "Custom");
 
-          customFont.Dispose();
-          MessageBox.Show(customFont.Families.Length.ToString());
-            File.Delete(Path.Combine(Util.ArrayFont.path, @"font\font.ttf"));
+          ComboFont = null;
+          fontFile = "";
           }
 
         changed();
@@ -411,7 +403,7 @@ namespace FontCraft.Forms
     {
       Util.SaveProcess save = new Util.SaveProcess();
 
-        save.Save(mainFile);
+        save.Save(mainFile, fontPath: fontFile);
 
       filesPath = save.savePath;
       oldFile = mainFile;
@@ -429,10 +421,7 @@ namespace FontCraft.Forms
         if (open.ShowDialog() == DialogResult.OK)
         {
           if (customFont != null)
-          {
             customFont.Dispose();
-            MessageBox.Show(customFont.Families.Length.ToString());
-          }
 
           Util.OpenProcess op = new Util.OpenProcess();
           MainFile main = op.Open(open.FileName);
@@ -441,12 +430,13 @@ namespace FontCraft.Forms
           oldFile = main;
 
           ComboFont.Items.RemoveAt(0);
-          if (File.Exists(Path.Combine(Util.ArrayFont.path, @"font\font.ttf")))
+          if (File.Exists(op.fontFile))
           {
             customFont = new PrivateFontCollection();
-            customFont.AddFontFile(Path.Combine(Util.ArrayFont.path, @"font\font.ttf"));
-
+            customFont.AddFontFile(op.fontFile);
             ComboFont.Items.Insert(0, "(" + customFont.Families[0].Name + ")");
+
+            fontFile = op.fontFile;
           }
           else
             ComboFont.Items.Insert(0, "Custom");
@@ -455,12 +445,22 @@ namespace FontCraft.Forms
           filesPath = open.FileName;
 
           changed();
-          customFont.Dispose();
-          customFont = null;
         }
       }
     }
 
     private void OpenBtn_ButtonClick(object sender, EventArgs e) => openToolStripMenuItem_Click(sender, e);
+
+    private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+      Util.SaveProcess save = new Util.SaveProcess();
+
+      save.Save(mainFile, filesPath, fontFile);
+
+      filesPath = save.savePath;
+      oldFile = mainFile;
+    }
+
+    private void exportToolStripMenuItem_Click(object sender, EventArgs e) => ExportBtn_Click(sender, e);
   }
 }
