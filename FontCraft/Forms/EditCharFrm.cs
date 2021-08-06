@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Text;
-using System.IO;
 using System.Windows.Forms;
 
 namespace FontCraft.Forms
@@ -37,7 +36,7 @@ namespace FontCraft.Forms
       this.y = y;
       this.s = s;
 
-      str = (Ichar < 0) ? "A" : Util.ArrayFont.arrayFont[idChar];
+      str = (Ichar < 0) ? "A" : Util.Config.arrayFont[idChar];
     }
 
     private void EditCharFrm_Load(object sender, EventArgs e)
@@ -70,7 +69,7 @@ namespace FontCraft.Forms
       if (font.Contains("("))
       {
         customFont = new PrivateFontCollection();
-        customFont.AddFontFile(Path.Combine(Util.ArrayFont.path, @"font\font.ttf"));
+        customFont.AddFontFile(Util.Config.fontFile);
 
         Font setFont = new Font(customFont.Families[0], (float)fontSize.Value, style);
         graph.DrawString(str, setFont, white, new PointF((float)paddBottom.Value, (float)paddTop.Value));

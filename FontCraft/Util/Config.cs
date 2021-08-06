@@ -1,10 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
+using System.Text;
 
 namespace FontCraft.Util
 {
-  class ArrayFont
+  public static class Config
   {
+    public static Bitmap surface;
+    public static string fontFile = "";
+    public static string filesPath = "";
+
+    public static string javaPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".minecraft");
+    public static string bedrockPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+      "Packages", "Microsoft.MinecraftUWP_8wekyb3d8bbwe");
+
     public static string[] arrayFont = {"À", "Á", "Â", "È", "Ê", "Ë", "Í", "Ó", "Ô", "Õ", "Ú", "ß", "ã", "õ", "ğ", "İ",
                                         "¹", "Œ", "œ", "Ş", "ş", "Ŵ", "ŵ", "ž", "ê", "", "", "", "", "", "", "",
                                         "", "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/",
@@ -23,7 +34,9 @@ namespace FontCraft.Util
                                         "≡", "±", "≥", "≤", "⌡", "⌠", "÷", "≈", "°", "▪", "·", "√", "ⁿ", "²", "■", ""};
 
     public static string pathTemp = Path.Combine(Path.GetTempPath(), "FontCraft");
-    public static string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), 
+    public static string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                                @"yansaan\FontCraft");
+    public static string savePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                                 @"yansaan\FontCraft");
   }
 }

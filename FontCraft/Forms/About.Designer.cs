@@ -63,6 +63,7 @@ namespace FontCraft.Forms
       this.Controls.Add(this.pictureBox1);
       this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
       this.Name = "About";
+      this.ShowInTaskbar = false;
       this.Text = "About";
       this.Load += new System.EventHandler(this.About_Load);
       ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

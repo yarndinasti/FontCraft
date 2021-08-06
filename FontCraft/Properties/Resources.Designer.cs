@@ -103,6 +103,16 @@ namespace FontCraft.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap craft_icon_8 {
+            get {
+                object obj = ResourceManager.GetObject("craft_icon_8", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap edit_font_8 {
             get {
                 object obj = ResourceManager.GetObject("edit_font_8", resourceCulture);
@@ -166,6 +176,46 @@ namespace FontCraft.Properties {
         internal static System.Drawing.Bitmap layout2 {
             get {
                 object obj = ResourceManager.GetObject("layout2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap redo_8 {
+            get {
+                object obj = ResourceManager.GetObject("redo_8", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap redo_disabled_8 {
+            get {
+                object obj = ResourceManager.GetObject("redo_disabled_8", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap undo_8 {
+            get {
+                object obj = ResourceManager.GetObject("undo_8", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap undo_disabled_8 {
+            get {
+                object obj = ResourceManager.GetObject("undo_disabled_8", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

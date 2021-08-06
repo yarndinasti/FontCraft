@@ -8,6 +8,7 @@ namespace FontCraft.Util.Files
     public string font_name { get; set; }
     public int bold { get; set; }
     public int italic { get; set; }
+    //public float hd_size { get; set; }
     public List<Chars> chars { get; set; }
   }
 

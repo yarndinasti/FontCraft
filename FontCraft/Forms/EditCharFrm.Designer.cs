@@ -173,6 +173,7 @@ namespace FontCraft.Forms
       this.Controls.Add(this.previewBox);
       this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
       this.Name = "EditCharFrm";
+      this.ShowInTaskbar = false;
       this.Text = "EditCharFrm";
       this.Load += new System.EventHandler(this.EditCharFrm_Load);
       ((System.ComponentModel.ISupportInitialize)(this.previewBox)).EndInit();

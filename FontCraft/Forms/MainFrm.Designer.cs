@@ -44,6 +44,9 @@ namespace FontCraft.Forms
       this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
       this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.EditMenu = new System.Windows.Forms.ToolStripMenuItem();
+      this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.wikiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,6 +55,9 @@ namespace FontCraft.Forms
       this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.importAsHDPackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+      this.undoBtn = new System.Windows.Forms.ToolStripSplitButton();
+      this.redoBtn = new System.Windows.Forms.ToolStripButton();
+      this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
       this.ComboFont = new System.Windows.Forms.ToolStripComboBox();
       this.BrowseBtn = new System.Windows.Forms.ToolStripButton();
       this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -81,7 +87,7 @@ namespace FontCraft.Forms
       this.BgPanel.BackgroundImage = global::FontCraft.Properties.Resources.background;
       this.BgPanel.Controls.Add(this.previewPanel);
       this.BgPanel.ForeColor = System.Drawing.SystemColors.ControlText;
-      this.BgPanel.Location = new System.Drawing.Point(1, 85);
+      this.BgPanel.Location = new System.Drawing.Point(1, 54);
       this.BgPanel.Name = "BgPanel";
       this.BgPanel.Size = new System.Drawing.Size(512, 512);
       this.BgPanel.TabIndex = 3;
@@ -90,6 +96,7 @@ namespace FontCraft.Forms
       // 
       this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
+            this.EditMenu,
             this.helpToolStripMenuItem});
       this.menuStrip1.Location = new System.Drawing.Point(0, 0);
       this.menuStrip1.Name = "menuStrip1";
@@ -119,7 +126,7 @@ namespace FontCraft.Forms
       this.newToolStripMenuItem1.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
       this.newToolStripMenuItem1.Size = new System.Drawing.Size(193, 22);
       this.newToolStripMenuItem1.Text = "&New";
-      this.newToolStripMenuItem1.Click += new System.EventHandler(this.newToolStripMenuItem1_Click);
+      this.newToolStripMenuItem1.Click += new System.EventHandler(this.newEvent);
       // 
       // openToolStripMenuItem
       // 
@@ -127,7 +134,7 @@ namespace FontCraft.Forms
       this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
       this.openToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
       this.openToolStripMenuItem.Text = "&Open";
-      this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+      this.openToolStripMenuItem.Click += new System.EventHandler(this.openEvent);
       // 
       // saveToolStripMenuItem
       // 
@@ -166,6 +173,7 @@ namespace FontCraft.Forms
             | System.Windows.Forms.Keys.O)));
       this.fromHDFontToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
       this.fromHDFontToolStripMenuItem.Text = "&From HD Font";
+      this.fromHDFontToolStripMenuItem.Click += new System.EventHandler(this.importHD);
       // 
       // exportToolStripMenuItem
       // 
@@ -174,7 +182,7 @@ namespace FontCraft.Forms
             | System.Windows.Forms.Keys.S)));
       this.exportToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
       this.exportToolStripMenuItem.Text = "E&xport";
-      this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
+      this.exportToolStripMenuItem.Click += new System.EventHandler(this.ExportBtn_Click);
       // 
       // toolStripSeparator5
       // 
@@ -188,6 +196,31 @@ namespace FontCraft.Forms
       this.exitToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
       this.exitToolStripMenuItem.Text = "&Exit";
       this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+      // 
+      // EditMenu
+      // 
+      this.EditMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.undoToolStripMenuItem,
+            this.redoToolStripMenuItem});
+      this.EditMenu.Name = "EditMenu";
+      this.EditMenu.Size = new System.Drawing.Size(39, 20);
+      this.EditMenu.Text = "E&dit";
+      this.EditMenu.Click += new System.EventHandler(this.undoEvent);
+      // 
+      // undoToolStripMenuItem
+      // 
+      this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
+      this.undoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
+      this.undoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+      this.undoToolStripMenuItem.Text = "&Undo";
+      // 
+      // redoToolStripMenuItem
+      // 
+      this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
+      this.redoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
+      this.redoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+      this.redoToolStripMenuItem.Text = "&Redo";
+      this.redoToolStripMenuItem.Click += new System.EventHandler(this.redoEvent);
       // 
       // helpToolStripMenuItem
       // 
@@ -216,6 +249,9 @@ namespace FontCraft.Forms
       this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.OpenBtn,
             this.toolStripSeparator1,
+            this.undoBtn,
+            this.redoBtn,
+            this.toolStripSeparator6,
             this.ComboFont,
             this.BrowseBtn,
             this.toolStripSeparator2,
@@ -242,25 +278,51 @@ namespace FontCraft.Forms
       this.OpenBtn.Size = new System.Drawing.Size(32, 22);
       this.OpenBtn.Text = "Open";
       this.OpenBtn.ToolTipText = "Open";
-      this.OpenBtn.ButtonClick += new System.EventHandler(this.OpenBtn_ButtonClick);
+      this.OpenBtn.ButtonClick += new System.EventHandler(this.openEvent);
       // 
       // newToolStripMenuItem
       // 
       this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-      this.newToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+      this.newToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
       this.newToolStripMenuItem.Text = "New";
-      this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
+      this.newToolStripMenuItem.Click += new System.EventHandler(this.newEvent);
       // 
       // importAsHDPackToolStripMenuItem
       // 
       this.importAsHDPackToolStripMenuItem.Name = "importAsHDPackToolStripMenuItem";
-      this.importAsHDPackToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+      this.importAsHDPackToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
       this.importAsHDPackToolStripMenuItem.Text = "Import on HD Font";
+      this.importAsHDPackToolStripMenuItem.Click += new System.EventHandler(this.importHD);
       // 
       // toolStripSeparator1
       // 
       this.toolStripSeparator1.Name = "toolStripSeparator1";
       this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+      // 
+      // undoBtn
+      // 
+      this.undoBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+      this.undoBtn.Image = global::FontCraft.Properties.Resources.undo_8;
+      this.undoBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+      this.undoBtn.Name = "undoBtn";
+      this.undoBtn.Size = new System.Drawing.Size(32, 22);
+      this.undoBtn.Text = "Undo";
+      this.undoBtn.ButtonClick += new System.EventHandler(this.undoEvent);
+      // 
+      // redoBtn
+      // 
+      this.redoBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+      this.redoBtn.Image = global::FontCraft.Properties.Resources.redo_8;
+      this.redoBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+      this.redoBtn.Name = "redoBtn";
+      this.redoBtn.Size = new System.Drawing.Size(23, 22);
+      this.redoBtn.Text = "Redo";
+      this.redoBtn.Click += new System.EventHandler(this.redoEvent);
+      // 
+      // toolStripSeparator6
+      // 
+      this.toolStripSeparator6.Name = "toolStripSeparator6";
+      this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
       // 
       // ComboFont
       // 
@@ -334,7 +396,7 @@ namespace FontCraft.Forms
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(514, 599);
+      this.ClientSize = new System.Drawing.Size(514, 567);
       this.Controls.Add(this.toolStrip1);
       this.Controls.Add(this.BgPanel);
       this.Controls.Add(this.menuStrip1);
@@ -387,6 +449,12 @@ namespace FontCraft.Forms
     private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
     private System.Windows.Forms.ToolStripMenuItem importAsHDPackToolStripMenuItem;
     private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem1;
+    private System.Windows.Forms.ToolStripSplitButton undoBtn;
+    private System.Windows.Forms.ToolStripButton redoBtn;
+    private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+    private System.Windows.Forms.ToolStripMenuItem EditMenu;
+    private System.Windows.Forms.ToolStripMenuItem undoToolStripMenuItem;
+    private System.Windows.Forms.ToolStripMenuItem redoToolStripMenuItem;
   }
 }
 

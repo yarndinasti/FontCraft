@@ -8,25 +8,25 @@ namespace FontCraft.Util
 {
   public class OpenProcess
   {
-    public string fontFile;
+    //public string fontFile;
 
     ClsEncryptDecryptFiles decryptFiles = new ClsEncryptDecryptFiles("fontcraftfile");
     public MainFile Open(string path)
     {
-      string fontDir = Path.Combine(Util.ArrayFont.path, "font");
+      string fontDir = Path.Combine(Util.Config.path, "font");
 
-      if (!Directory.Exists(ArrayFont.pathTemp)) Directory.CreateDirectory(Path.Combine(ArrayFont.pathTemp, "file"));
+      if (!Directory.Exists(Config.pathTemp)) Directory.CreateDirectory(Path.Combine(Config.pathTemp, "file"));
       if (!Directory.Exists(fontDir))
         Directory.CreateDirectory(fontDir);
 
-      File.WriteAllBytes(Path.Combine(ArrayFont.pathTemp, "file.zip"), decryptFiles.Decryption(path));
-      ZipFile.ExtractToDirectory(Path.Combine(ArrayFont.pathTemp, "file.zip"), Path.Combine(ArrayFont.pathTemp, "file"));
+      File.WriteAllBytes(Path.Combine(Config.pathTemp, "file.zip"), decryptFiles.Decryption(path));
+      ZipFile.ExtractToDirectory(Path.Combine(Config.pathTemp, "file.zip"), Path.Combine(Config.pathTemp, "file"));
 
-      string json = File.ReadAllText(Path.Combine(ArrayFont.pathTemp, @"file\config.json"));
+      string json = File.ReadAllText(Path.Combine(Config.pathTemp, @"file\config.json"));
 
       MainFile mainFile = JsonSerializer.Deserialize<MainFile>(json);
 
-      if (File.Exists(Path.Combine(ArrayFont.pathTemp, @"file\font.ttf")))
+      if (File.Exists(Path.Combine(Config.pathTemp, @"file\font.ttf")))
       {
         int count = 0;
         string nameFont = String.Format("font{0}", count.ToString("000"));
@@ -34,12 +34,12 @@ namespace FontCraft.Util
         while (File.Exists(Path.Combine(fontDir, nameFont + ".ttf")))
           nameFont = String.Format("font{0}", count++.ToString("000"));
 
-        fontFile = Path.Combine(fontDir, nameFont + ".ttf");
-        File.Copy(Path.Combine(ArrayFont.pathTemp, @"file\font.ttf"), fontFile);
+        Config.fontFile = Path.Combine(fontDir, nameFont + ".ttf");
+        File.Copy(Path.Combine(Config.pathTemp, @"file\font.ttf"), Config.fontFile);
       }
 
-      Directory.Delete(Path.Combine(ArrayFont.pathTemp, "file"), true);
-      File.Delete(Path.Combine(ArrayFont.pathTemp, "file.zip"));
+      Directory.Delete(Path.Combine(Config.pathTemp, "file"), true);
+      File.Delete(Path.Combine(Config.pathTemp, "file.zip"));
 
       return mainFile;
     }
