@@ -127,7 +127,7 @@ namespace FontCraft.Forms
         Bitmap tempIcon = new Bitmap(op.FileName);
         if (tempIcon.Width != tempIcon.Height)
         {
-          MessageBox.Show("", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+          MessageBox.Show("Image is not support square rasio", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
           return;
         }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FontCraft.Util.CreateJson;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -90,14 +91,19 @@ namespace FontCraft.Util
       string fontHDPath = Path.Combine(namePackPath, @"assets\minecraft\font");
       Directory.CreateDirectory(fontHDPath);
 
-      var providers = new Util.CreateJson.FontHDJava { 
-        type = "ttf", 
-        file = "minecraft:font.ttf" ,
-        shift = new float[2] {0, 0.5F},
+      var provider = new ProvidersHD
+      {
+        type = "ttf",
+        file = "minecraft:font.ttf",
+        shift = new float[2] { 0, 0.5F },
         size = 10.5f,
         oversample = 4.0f,
         skip = ""
       };
+
+      List<ProvidersHD> providers = new List<ProvidersHD>();
+      providers.Add(provider);
+
       File.WriteAllText(Path.Combine(fontHDPath, "default.json"),
         JsonSerializer.Serialize(new { providers }));
 
@@ -198,7 +204,7 @@ namespace FontCraft.Util
 
       if (!Directory.Exists(fontHDPath)) Directory.CreateDirectory(fontHDPath);
 
-      var providers = new Util.CreateJson.FontHDJava
+      var provider = new ProvidersHD
       {
         type = "ttf",
         file = "minecraft:font.ttf",
@@ -207,6 +213,10 @@ namespace FontCraft.Util
         oversample = 4.0f,
         skip = ""
       };
+
+      List<ProvidersHD> providers = new List<ProvidersHD>();
+      providers.Add(provider);
+
       File.WriteAllText(Path.Combine(fontHDPath, "default.json"),
         JsonSerializer.Serialize(new { providers }));
 

@@ -10,7 +10,7 @@ namespace FontCraft.Util.CreateJson
     public int pack_format { get; set; }
   }
 
-  public class FontHDJava
+  public class ProvidersHD
   {
     public string type { get; set; }
     public string file { get; set; }
@@ -18,6 +18,11 @@ namespace FontCraft.Util.CreateJson
     public float size { get; set; }
     public float oversample { get; set; }
     public string skip { get; set; }
+  }
+
+  public class FontHDJava
+  {
+    public List<ProvidersHD> providers { get; set; }
   }
 
   public class modulesBR

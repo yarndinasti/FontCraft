@@ -1,8 +1,7 @@
-﻿using FontCraft.Util.Files;
+﻿using FontCraft.Util;
+using FontCraft.Util.Files;
 using System;
-using FontCraft.Util;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.IO;
 using System.Text.Json;
@@ -215,7 +214,7 @@ namespace FontCraft.Forms
     private void BoldBtn_Click(object sender, EventArgs e)
     {
       mainFile.bold = (mainFile.bold == 0) ? 1 : 0;
-      
+
       changed();
     }
 
@@ -246,7 +245,7 @@ namespace FontCraft.Forms
       String newFile = JsonSerializer.Serialize(mainFile);
 
       if (old == newFile) return true;
-      DialogResult exit = MessageBox.Show("", "",
+      DialogResult exit = MessageBox.Show("Are you sure for saving this file?", "Save File",
         MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 
       if (exit == DialogResult.Yes)
@@ -371,6 +370,30 @@ namespace FontCraft.Forms
 
     private void importHD(object sender, EventArgs e)
     {
+      ImportHDfrm ImportHD = new ImportHDfrm();
+
+      if ((ImportHD.ShowDialog() == DialogResult.OK) && Saveing())
+      {
+        mainFile = ImportHD.main;
+        oldFile = new CreateFile().InitFile();
+        ComboFont.SelectedIndex = 1;
+        Config.filesPath = "";
+        oldFile.font_name = ComboFont.Text;
+
+        Config.fontFile = ImportHD.font;
+        customFont = new PrivateFontCollection();
+        customFont.AddFontFile(Path.Combine(Config.fontFile));
+
+        ComboFont.Items.RemoveAt(0);
+        ComboFont.Items.Insert(0, "(" + customFont.Families[0].Name + ")");
+        ComboFont.SelectedIndex = 0;
+
+        changed();
+      } 
+      else
+      {
+
+      }
 
     }
 
@@ -381,7 +404,7 @@ namespace FontCraft.Forms
 
     private void redoEvent(object sender, EventArgs e)
     {
-      
+
     }
   }
 }
